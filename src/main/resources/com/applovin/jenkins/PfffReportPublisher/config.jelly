@@ -1,0 +1,30 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+ xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <!--
+    This jelly script is used for per-project configuration.
+
+    See global.jelly for a general discussion about jelly script.
+  -->
+      <!--
+        Creates a text field that shows the value of the "name" property.
+        When submitted, it will be passed to the corresponding constructor parameter.
+      -->
+    <f:entry title="SCheck log file Path" field="scheckLogFilePath" description="The path relative to the workspace">
+        <f:textbox />
+    </f:entry>
+    <f:entry title="Error threshold" field="failedThreshold" description="The number of errors it takes to fail the build.">
+        <f:textbox />
+    </f:entry>
+    <f:entry title="Exclude List" field="excludes" description="A comma-separated string of patterns that are used to ignore directories.">
+        <f:textbox />
+    </f:entry>
+    <f:entry title="Ignored Errors List" field="ignoredErrors" description="A comma-separated string of errors that will be ignored.">
+        <f:textbox />
+    </f:entry>
+  <f:advanced>
+        <f:entry title="Plugin Url Path" field="pluginUrlPath" description="The path to the jenkins user content url e.g. http://host:port[/jenkins/]plugin - leave empty if jenkins url root is host:port">
+            <f:textbox />
+        </f:entry>
+    </f:advanced>
+</j:jelly>
+
