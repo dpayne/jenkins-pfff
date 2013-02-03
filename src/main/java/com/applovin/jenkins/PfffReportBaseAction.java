@@ -3,7 +3,6 @@ package com.applovin.jenkins;
 import hudson.FilePath;
 import hudson.model.Action;
 import hudson.model.DirectoryBrowserSupport;
-import hudson.model.HealthReportingAction;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
 
@@ -12,10 +11,9 @@ import java.io.File;
 import java.io.IOException;
 
 public abstract class PfffReportBaseAction
-        implements Action, HealthReportingAction
+        implements Action
 {
-
-    private static PfffReport report;
+    private PfffReport report;
 
     protected abstract String getTitle();
 
@@ -32,8 +30,9 @@ public abstract class PfffReportBaseAction
         return "Pfff Reports";
     }
 
-    public String getSCheckDescription() {
-        return "SCheck: " + report.getErrors().size() + " warnings from one analysis.";
+    public String getNumberOfErrors()
+    {
+        return String.valueOf( report.getErrors().size() );
     }
 
     public String getIconFileName()
@@ -48,11 +47,19 @@ public abstract class PfffReportBaseAction
 
     public void setReport(PfffReport report)
     {
-        PfffReportBaseAction.report = report;
+        this.report = report;
     }
 
-    public void doGraph(StaplerRequest req, StaplerResponse rsp) throws IOException
-    {
+    public boolean isFloatingBoxActive() {
+        return true;
+    }
+
+    public boolean isGraphActive() {
+        return true;
+    }
+
+    public String getGraphName() {
+        return getDisplayName();
     }
 
     public void doDynamic(StaplerRequest req, StaplerResponse rsp) throws IOException, ServletException

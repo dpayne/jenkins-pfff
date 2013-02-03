@@ -1,7 +1,6 @@
 package com.applovin.jenkins;
 
 import hudson.model.AbstractBuild;
-import hudson.model.HealthReport;
 
 import java.io.File;
 
@@ -24,10 +23,5 @@ public class PfffReportBuildAction extends PfffReportBaseAction
     protected File dir()
     {
         return new File( build.getRootDir(), "pfff-html-reports" );
-    }
-
-    public HealthReport getBuildHealth()
-    {
-        return new HealthReport( getReport().getErrors().size(), " number of errors" );
     }
 }

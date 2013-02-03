@@ -30,7 +30,7 @@ public class ReportBuilder
     private final PrintStream   logger;
     private static final String LOG_TAG     = "[PFFF] ";
     private final File          workspace;
-    private List<SCheckError> errors;
+    private List<SCheckError>   errors;
 
     public ReportBuilder(File reportBuildDirectory, File workspace, String pluginUrlPath, String buildNumber,
             String buildProjectName, int failedThreshold, File scheckLogFile,

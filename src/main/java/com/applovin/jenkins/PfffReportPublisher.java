@@ -26,16 +26,18 @@ import java.util.List;
 
 public class PfffReportPublisher extends Recorder
 {
-    private static final String LOG_TAG = "[PFFF] ";
+    private static final String   LOG_TAG = "[PFFF] ";
 
-    public final String         scheckLogFilePath;
-    public final String         pluginUrlPath;
-    private final String        ignoredErrors;
-    private int                 failedThreshold;
-    private final String        excludes;
-    private List<SCheckError> errors;
-    private AbstractBuild<?, ?> build;
-    private PfffReport report;
+    public final String           scheckLogFilePath;
+    public final String           pluginUrlPath;
+    public final String           ignoredErrors;
+    public final int              failedThreshold;
+    public final String           excludes;
+    private List<SCheckError>     errors;
+
+    private AbstractBuild<?, ?>   build;
+    private PfffReport            report;
+    private PfffReportBuildAction action;
 
     @DataBoundConstructor
     public PfffReportPublisher(String scheckLogFilePath, String failedThreshold, String excludes, String ignoredErrors,
@@ -112,8 +114,7 @@ public class PfffReportPublisher extends Recorder
 
             reportBuilder.generateReports();
             this.errors = reportBuilder.getErrors();
-            DescriptorImpl.setErrors(errors);
-            report = new PfffReport(build, errors);
+            report = new PfffReport( build, errors );
             buildResult = reportBuilder.getBuildStatus();
         }
         catch (Exception e)
@@ -122,7 +123,9 @@ public class PfffReportPublisher extends Recorder
             e.printStackTrace( listener.getLogger() );
         }
 
-        build.addAction( new PfffReportBuildAction( build ) );
+        this.action = new PfffReportBuildAction( build );
+        action.setReport( report );
+        build.addAction( action );
         return buildResult;
     }
 
@@ -130,25 +133,13 @@ public class PfffReportPublisher extends Recorder
     public Action getProjectAction(AbstractProject<?, ?> project)
     {
         PfffReportProjectAction action = new PfffReportProjectAction( project );
-        action.setReport(report);
+        action.setReport( report );
         return action;
     }
 
     @Extension
     public static class DescriptorImpl extends BuildStepDescriptor<Publisher>
     {
-        private static List<SCheckError> errors;
-
-        public static List<SCheckError> getErrors()
-        {
-            return errors;
-        }
-
-        public static void setErrors(List<SCheckError> errors)
-        {
-            DescriptorImpl.errors = errors;
-        }
-
         @Override
         public String getDisplayName()
         {
