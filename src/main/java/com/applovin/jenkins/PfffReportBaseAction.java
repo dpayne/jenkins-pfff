@@ -68,4 +68,6 @@ public abstract class PfffReportBaseAction
         dbs.setIndexFileName( "scheck-overview.html" );
         dbs.generateResponse( req, rsp, this );
     }
+
+    public abstract void doGraph(StaplerRequest req, StaplerResponse rsp);
 }

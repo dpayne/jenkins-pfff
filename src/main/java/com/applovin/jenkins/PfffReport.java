@@ -114,7 +114,7 @@ public class PfffReport implements Serializable
         {
             return;
         }
-//        r.doGraph( req, rsp );
+        r.doGraph( req, rsp );
     }
 
     /**
