@@ -50,15 +50,18 @@ public abstract class PfffReportBaseAction
         this.report = report;
     }
 
-    public boolean isFloatingBoxActive() {
+    public boolean isFloatingBoxActive()
+    {
         return true;
     }
 
-    public boolean isGraphActive() {
+    public boolean isGraphActive()
+    {
         return true;
     }
 
-    public String getGraphName() {
+    public String getGraphName()
+    {
         return getDisplayName();
     }
 

@@ -24,11 +24,11 @@ public class PfffConfig implements Cloneable, Serializable
     private String           encoding      = "default";
     private int              unstableLimit;
     private int              errorLimit;
-    private String SCheckLogFilePath;
-    private String pluginUrlPath;
-    private String ignoredErrors;
-    private int failedThreshold;
-    private String excludes;
+    private String           SCheckLogFilePath;
+    private String           pluginUrlPath;
+    private String           ignoredErrors;
+    private int              failedThreshold;
+    private String           excludes;
 
     /**
      * The constructor fot eh violations config. This creates a config with default values.

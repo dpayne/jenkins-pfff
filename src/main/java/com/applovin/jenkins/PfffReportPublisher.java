@@ -116,12 +116,12 @@ public class PfffReportPublisher extends Recorder
             this.errors = reportBuilder.getErrors();
             PfffConfig pfffConfig = new PfffConfig();
             pfffConfig.setSCheckLogFilePath( scheckLogFilePath );
-            pfffConfig.setPluginUrlPath(pluginUrlPath);
-            pfffConfig.setIgnoredErrors(ignoredErrors);
-            pfffConfig.setFailedThreshold(failedThreshold);
-            pfffConfig.setExcludes(excludes);
+            pfffConfig.setPluginUrlPath( pluginUrlPath );
+            pfffConfig.setIgnoredErrors( ignoredErrors );
+            pfffConfig.setFailedThreshold( failedThreshold );
+            pfffConfig.setExcludes( excludes );
             this.action = new PfffReportBuildAction( build, pfffConfig );
-            report = new PfffReport(action);
+            report = new PfffReport( action );
             report.setConfig( pfffConfig );
             report.setSCheckErrors( errors );
             action.setReport( report );

@@ -1,11 +1,6 @@
 package com.applovin.jenkins;
 
 import hudson.model.AbstractBuild;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-import hudson.model.AbstractBuild;
 import hudson.model.Api;
 import hudson.model.HealthReport;
 import hudson.model.Result;
@@ -32,7 +27,6 @@ import org.kohsuke.stapler.export.ExportedBean;
 
 import java.awt.*;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -40,22 +34,20 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * User: dpayne
- * Date: 2/3/13
- * Time: 1:53 PM
+ * User: dpayne Date: 2/3/13 Time: 1:53 PM
  */
 @ExportedBean
 public abstract class PfffObject<SELF extends PfffObject<SELF>>
 {
-    private static final long serialVersionUID = 1L;
-    private static final Logger LOG    = Logger.getLogger( PfffReport.class.getName() );
+    private static final long     serialVersionUID = 1L;
+    private static final Logger   LOG              = Logger.getLogger( PfffReport.class.getName() );
 
-    private AbstractBuild<?, ?> build;
-    private PfffConfig          config;
-    public List<SCheckError> errors = new ArrayList<SCheckError>();
+    private AbstractBuild<?, ?>   build;
+    private PfffConfig            config;
+    public List<SCheckError>      errors           = new ArrayList<SCheckError>();
     private PfffReportBuildAction action;
-    private PfffReport previousResult;
-    private PfffReport report;
+    private PfffReport            previousResult;
+    private PfffReport            report;
 
     public void setBuildAction(PfffReportBuildAction buildAction)
     {
@@ -65,7 +57,7 @@ public abstract class PfffObject<SELF extends PfffObject<SELF>>
 
     /**
      * Set the build.
-     *
+     * 
      * @param build
      *            the current build.
      */
@@ -76,7 +68,7 @@ public abstract class PfffObject<SELF extends PfffObject<SELF>>
 
     /**
      * Get the build.
-     *
+     * 
      * @return the build.
      */
     public AbstractBuild<?, ?> getBuild()
@@ -86,7 +78,7 @@ public abstract class PfffObject<SELF extends PfffObject<SELF>>
 
     /**
      * Set the config.
-     *
+     * 
      * @param config
      *            the config.
      */
@@ -97,7 +89,7 @@ public abstract class PfffObject<SELF extends PfffObject<SELF>>
 
     /**
      * Get the config.
-     *
+     * 
      * @return the config.
      */
     public PfffConfig getConfig()
@@ -107,7 +99,7 @@ public abstract class PfffObject<SELF extends PfffObject<SELF>>
 
     /**
      * Get the overall health for the build.
-     *
+     * 
      * @return the health report, null if there are no counts.
      */
     public HealthReport getBuildHealth()
@@ -118,7 +110,7 @@ public abstract class PfffObject<SELF extends PfffObject<SELF>>
 
     /**
      * Get the icon for a type.
-     *
+     * 
      * @param t
      *            the type
      * @return the icon name.
@@ -135,17 +127,17 @@ public abstract class PfffObject<SELF extends PfffObject<SELF>>
 
     /**
      * Get the previous ViolationsReport
-     *
+     * 
      * @return the previous report if present, null otherwise.
      */
     public PfffReport previous()
     {
-        return findPfffReport(build.getPreviousBuild());
+        return findPfffReport( build.getPreviousBuild() );
     }
 
     /**
      * Get the unstable status for this report.
-     *
+     * 
      * @return true if one of the violations equals or exceed the unstable threshold for that violations type.
      */
     private boolean isUnstable()
@@ -160,7 +152,7 @@ public abstract class PfffObject<SELF extends PfffObject<SELF>>
 
     /**
      * Get the failed status for this report.
-     *
+     * 
      * @return true if one of the violations equals or exceed the failed threshold of that violations type.
      */
     private boolean isFailed()
@@ -190,7 +182,7 @@ public abstract class PfffObject<SELF extends PfffObject<SELF>>
     }
 
     public static PfffReport findPfffReport(
-      AbstractBuild<?, ?> b)
+            AbstractBuild<?, ?> b)
     {
         for (; b != null; b = b.getPreviousBuild())
         {
@@ -211,7 +203,7 @@ public abstract class PfffObject<SELF extends PfffObject<SELF>>
     }
 
     public static PfffReportIterator iteration(
-      AbstractBuild<?, ?> build)
+            AbstractBuild<?, ?> build)
     {
         return new PfffReportIterator( build );
     }
@@ -227,7 +219,7 @@ public abstract class PfffObject<SELF extends PfffObject<SELF>>
     }
 
     public static class PfffReportIterator
-      implements Iterator<PfffReport>, Iterable<PfffReport>
+            implements Iterator<PfffReport>, Iterable<PfffReport>
     {
         private AbstractBuild<?, ?> curr;
 
@@ -265,22 +257,24 @@ public abstract class PfffObject<SELF extends PfffObject<SELF>>
     /**
      * Generates the graph that shows the coverage trend up to this report.
      */
-    public void doGraph(StaplerRequest req, StaplerResponse rsp) throws IOException {
-        if(ChartUtil.awtProblemCause != null) {
+    public void doGraph(StaplerRequest req, StaplerResponse rsp) throws IOException
+    {
+        if ( ChartUtil.awtProblemCause != null )
+        {
             // not available. send out error message
-            rsp.sendRedirect2(req.getContextPath()+"/images/headless.png");
+            rsp.sendRedirect2( req.getContextPath() + "/images/headless.png" );
             return;
         }
 
-        AbstractBuild<?,?> build = getBuild();
+        AbstractBuild<?, ?> build = getBuild();
         Calendar t = build.getTimestamp();
 
-        String w = hudson.Util.fixEmptyAndTrim(req.getParameter("width"));
-        String h = hudson.Util.fixEmptyAndTrim(req.getParameter("height"));
-        int width = (w != null) ? Integer.valueOf(w) : 500;
-        int height = (h != null) ? Integer.valueOf(h) : 200;
+        String w = hudson.Util.fixEmptyAndTrim( req.getParameter( "width" ) );
+        String h = hudson.Util.fixEmptyAndTrim( req.getParameter( "height" ) );
+        int width = (w != null) ? Integer.valueOf( w ) : 500;
+        int height = (h != null) ? Integer.valueOf( h ) : 200;
 
-        new GraphImpl(this, t, width, height) {
+        new GraphImpl( this, t, width, height ) {
 
             protected DataSetBuilder<String, ChartUtil.NumberOnlyBuildLabel> createDataSet(PfffObject obj)
             {
@@ -288,17 +282,18 @@ public abstract class PfffObject<SELF extends PfffObject<SELF>>
 
                 for (PfffObject a = obj; a != null; a = a.previous())
                 {
-                    ChartUtil.NumberOnlyBuildLabel label = new ChartUtil.NumberOnlyBuildLabel(a.getBuild());
-                    dsb.add(a.errors.size(), "Number of scheck errors", label);
+                    ChartUtil.NumberOnlyBuildLabel label = new ChartUtil.NumberOnlyBuildLabel( a.getBuild() );
+                    dsb.add( a.errors.size(), "Number of scheck errors", label );
                 }
 
                 return dsb;
             }
-        }.doPng(req, rsp);
+        }.doPng( req, rsp );
     }
 
-    public Api getApi() {
-        return new Api(this);
+    public Api getApi()
+    {
+        return new Api( this );
     }
 
     private abstract class GraphImpl extends Graph
@@ -306,59 +301,61 @@ public abstract class PfffObject<SELF extends PfffObject<SELF>>
 
         private PfffObject<SELF> obj;
 
-        public GraphImpl(PfffObject<SELF> obj, Calendar timestamp, int defaultW, int defaultH) {
-            super(timestamp, defaultW, defaultH);
+        public GraphImpl(PfffObject<SELF> obj, Calendar timestamp, int defaultW, int defaultH)
+        {
+            super( timestamp, defaultW, defaultH );
             this.obj = obj;
         }
 
         protected abstract DataSetBuilder<String, ChartUtil.NumberOnlyBuildLabel> createDataSet(PfffObject<SELF> obj);
 
-        protected JFreeChart createGraph() {
-            final CategoryDataset dataset = createDataSet(obj).build();
+        protected JFreeChart createGraph()
+        {
+            final CategoryDataset dataset = createDataSet( obj ).build();
             final JFreeChart chart = ChartFactory.createLineChart(
-              null, // chart title
-              null, // unused
-              "%", // range axis label
-              dataset, // data
-              PlotOrientation.VERTICAL, // orientation
-              true, // include legend
-              true, // tooltips
-              false // urls
-            );
+                    null, // chart title
+                    null, // unused
+                    "%", // range axis label
+                    dataset, // data
+                    PlotOrientation.VERTICAL, // orientation
+                    true, // include legend
+                    true, // tooltips
+                    false // urls
+                    );
 
             // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
             final LegendTitle legend = chart.getLegend();
-            legend.setPosition(RectangleEdge.RIGHT);
+            legend.setPosition( RectangleEdge.RIGHT );
 
-            chart.setBackgroundPaint(Color.white);
+            chart.setBackgroundPaint( Color.white );
 
             final CategoryPlot plot = chart.getCategoryPlot();
 
             // plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
-            plot.setBackgroundPaint(Color.WHITE);
-            plot.setOutlinePaint(null);
-            plot.setRangeGridlinesVisible(true);
-            plot.setRangeGridlinePaint(Color.black);
+            plot.setBackgroundPaint( Color.WHITE );
+            plot.setOutlinePaint( null );
+            plot.setRangeGridlinesVisible( true );
+            plot.setRangeGridlinePaint( Color.black );
 
-            CategoryAxis domainAxis = new ShiftedCategoryAxis(null);
-            plot.setDomainAxis(domainAxis);
-            domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
-            domainAxis.setLowerMargin(0.0);
-            domainAxis.setUpperMargin(0.0);
-            domainAxis.setCategoryMargin(0.0);
+            CategoryAxis domainAxis = new ShiftedCategoryAxis( null );
+            plot.setDomainAxis( domainAxis );
+            domainAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_90 );
+            domainAxis.setLowerMargin( 0.0 );
+            domainAxis.setUpperMargin( 0.0 );
+            domainAxis.setCategoryMargin( 0.0 );
 
             final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-            rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-            rangeAxis.setUpperBound(100);
-            rangeAxis.setLowerBound(0);
+            rangeAxis.setStandardTickUnits( NumberAxis.createIntegerTickUnits() );
+            rangeAxis.setUpperBound( 100 );
+            rangeAxis.setLowerBound( 0 );
 
             final LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
-            renderer.setBaseStroke(new BasicStroke(4.0f));
-            ColorPalette.apply(renderer);
+            renderer.setBaseStroke( new BasicStroke( 4.0f ) );
+            ColorPalette.apply( renderer );
 
             // crop extra space around the graph
-            plot.setInsets(new RectangleInsets(5.0, 0, 0, 5.0));
+            plot.setInsets( new RectangleInsets( 5.0, 0, 0, 5.0 ) );
 
             return chart;
         }
