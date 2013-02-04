@@ -24,6 +24,11 @@ public class PfffConfig implements Cloneable, Serializable
     private String           encoding      = "default";
     private int              unstableLimit;
     private int              errorLimit;
+    private String SCheckLogFilePath;
+    private String pluginUrlPath;
+    private String ignoredErrors;
+    private int failedThreshold;
+    private String excludes;
 
     /**
      * The constructor fot eh violations config. This creates a config with default values.
@@ -181,5 +186,35 @@ public class PfffConfig implements Cloneable, Serializable
     public int getErrorLimit()
     {
         return errorLimit;
+    }
+
+    public void setSCheckLogFilePath(String SCheckLogFilePath)
+    {
+        this.SCheckLogFilePath = SCheckLogFilePath;
+    }
+
+    public void setPluginUrlPath(String pluginUrlPath)
+    {
+        this.pluginUrlPath = pluginUrlPath;
+    }
+
+    public String getPluginUrlPath()
+    {
+        return pluginUrlPath;
+    }
+
+    public void setIgnoredErrors(String ignoredErrors)
+    {
+        this.ignoredErrors = ignoredErrors;
+    }
+
+    public void setFailedThreshold(int failedThreshold)
+    {
+        this.failedThreshold = failedThreshold;
+    }
+
+    public void setExcludes(String excludes)
+    {
+        this.excludes = excludes;
     }
 }

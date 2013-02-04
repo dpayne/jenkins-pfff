@@ -114,7 +114,18 @@ public class PfffReportPublisher extends Recorder
 
             reportBuilder.generateReports();
             this.errors = reportBuilder.getErrors();
-            report = new PfffReport( build, errors );
+            PfffConfig pfffConfig = new PfffConfig();
+            pfffConfig.setSCheckLogFilePath( scheckLogFilePath );
+            pfffConfig.setPluginUrlPath(pluginUrlPath);
+            pfffConfig.setIgnoredErrors(ignoredErrors);
+            pfffConfig.setFailedThreshold(failedThreshold);
+            pfffConfig.setExcludes(excludes);
+            this.action = new PfffReportBuildAction( build, pfffConfig );
+            report = new PfffReport(action);
+            report.setConfig( pfffConfig );
+            report.setSCheckErrors( errors );
+            action.setReport( report );
+            build.addAction( action );
             buildResult = reportBuilder.getBuildStatus();
         }
         catch (Exception e)
@@ -123,9 +134,6 @@ public class PfffReportPublisher extends Recorder
             e.printStackTrace( listener.getLogger() );
         }
 
-        this.action = new PfffReportBuildAction( build );
-        action.setReport( report );
-        build.addAction( action );
         return buildResult;
     }
 

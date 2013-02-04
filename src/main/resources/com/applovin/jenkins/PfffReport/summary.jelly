@@ -14,7 +14,7 @@
                   border-width:0px 0px 0px 0px;">
       <tr>
           <td style="${td}">
-            SCheck: <a href="pfff/?">${it.numberOfErrors} warnings</a> from one analysis.
+            SCheck: <a href="pfff">${it.numberOfErrors} warnings</a> from one analysis.
           </td>
       </tr>
     </table>
