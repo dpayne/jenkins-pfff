@@ -8,15 +8,12 @@ This is a jenkins plugin for [pfff](https://github.com/facebook/pfff). Currently
 from the output of the "scheck" program. This plugin does not run the "scheck" program, it uses a file containing the
 output of the scheck program generated in the build process.
 
-A compiled version of the plugin is avaliable here.
-    [pfff-reports](https://github.com/dpayne/jenkins-pfff/raw/master/pfff-reports.hpi)
+A compiled version of the plugin is avaliable at [pfff-reports](https://github.com/dpayne/jenkins-pfff/raw/master/pfff-reports.hpi)
 
 ## Building from source:
-Build with
-    mvn clean package
+Build with "mvn clean package"
 
-The generated plugin should now be available here
-    target/pfff-reports.hpi
+The generated plugin should now be available at "target/pfff-reports.hpi"
 
 ## Installing
 Upload the plugin to you jenkins server under Jenkins->Manage Jenkins->Manage Plugins. Go to the Advanced tab, then
@@ -34,17 +31,25 @@ path to a file containing the output of "scheck". It is also possible to ignore 
 folders so that they won't be included in the generated report.
 
 
+
+
+
 After running your build again a report will be generated containing all the errors and warning outputted by scheck.
 
 ![Scheck report]
 (https://github.com/dpayne/jenkins-pfff/raw/master/readme/ScheckReport.png)
 
 
+
 The build page contains a short summary of how many errors were detected by scheck
+
 ![Build page]
 (https://github.com/dpayne/jenkins-pfff/raw/master/readme/BuildPage.png)
 
 
+
+
 Going back to your project page, there should be a small graph containing a chart graphing the result of each build.
+
 ![Project page]
 (https://github.com/dpayne/jenkins-pfff/raw/master/readme/ProjectPage.png)
