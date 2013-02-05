@@ -110,8 +110,6 @@ public final class PfffReportBuildAction extends PfffObject<PfffReportBuildActio
             b = b.getPreviousBuild();
             if ( b == null )
                 return null;
-            if ( b.getResult() == Result.FAILURE )
-                continue;
             PfffReportBuildAction r = b.getAction( PfffReportBuildAction.class );
             if ( r != null )
                 return r;
