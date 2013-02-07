@@ -53,3 +53,6 @@ Going back to your project page, there should be a small graph containing a char
 
 ![Project page]
 (https://github.com/dpayne/jenkins-pfff/raw/master/readme/ProjectPage.png)
+
+## TODO
+Eventually all the other pff functionality should be added.
